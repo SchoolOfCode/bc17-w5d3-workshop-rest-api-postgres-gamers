@@ -18,7 +18,7 @@ export async function getBookById(id) {
   // Query the database and return the book with a matching id or null
 
   // Define the SQL query to fetch the book with the specified id from the 'books' table
-  const queryText = "SELECT * FROM books WHERE id = $1";
+  const queryText = "SELECT * FROM books WHERE id = $1"; // $1 is a placeholder for the id parameter which means it will be replaced by the actual value when the query is executed
 
   // Use the pool object to send the query to the database
   // passing the id as a parameter to prevent SQL injection
@@ -32,8 +32,12 @@ export async function getBookById(id) {
 
 export async function createBook(book) {
   // Query the database to create a book and return the newly created book
-  const queryText = `INSERT INTO books (id, title, published_date, author_id
-                      VALUES ${id}, ${title}, ${published_date}, ${author_id}`
+  const queryText = 'INSERT INTO books(id, title, published_date, author_id) VALUES($1, $2, $3, $4) RETURNING *';
+  const values = ['a', 'b', 'c', 'd'];
+  // const result = await pool.query(queryText, [book.id, book.title, book.published_date, book.author_id]);
+  const result = await pool.query(queryText, values);
+  // return result
+  return result.rows[0];
 }
 
 export async function updateBookById(id, updates) {
