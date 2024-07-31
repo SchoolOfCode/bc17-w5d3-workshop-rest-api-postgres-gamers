@@ -32,6 +32,8 @@ export async function getBookById(id) {
 
 export async function createBook(book) {
   // Query the database to create a book and return the newly created book
+  const queryText = `INSERT INTO books (id, title, published_date, author_id
+                      VALUES ${id}, ${title}, ${published_date}, ${author_id}`
 }
 
 export async function updateBookById(id, updates) {
