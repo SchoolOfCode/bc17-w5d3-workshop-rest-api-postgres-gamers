@@ -56,4 +56,7 @@ export async function updateBookById(id, updates) {
 
 export async function deleteBookById(id) {
   // Query the database to delete a book and return the deleted book or null
+  const queryText = "DELETE FROM books WHERE id = $1"
+  const result = await pool.query(queryText, [id]);
+  return result.rows[0] || null;
 }
