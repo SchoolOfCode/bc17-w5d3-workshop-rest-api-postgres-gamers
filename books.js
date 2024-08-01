@@ -31,16 +31,27 @@ export async function getBookById(id) {
 }
 
 export async function createBook(book) {
-  // Query the database to create a book and return the newly created book
-  const queryText = 'INSERT INTO books (title, published_date, author_id) VALUES ($1, $2, $3) RETURNING *';
-
-  const result = await pool.query(queryText, [book.title, book.published_date, book.author_id]);
-
-  return result.rows[0];
+  try {
+    // Query the database to create a book and return the newly created book
+    const queryText = 'INSERT INTO books (title, published_date, author_id) VALUES ($1, $2, $3) RETURNING *';
+    const result = await pool.query(queryText, [book.title, book.published_date, book.author_id]);
+    return result.rows[0];
+  } catch (error) {
+    console.error('Error creating book:', error);
+    throw error;
+  }
 }
 
 export async function updateBookById(id, updates) {
   // Query the database to update a book and return the newly updated book or null
+  try {const queryText = "UPDATE books SET title = $1, author_id = $2, published_date = $3 WHERE id = $4 RETURNING *";
+    const result = await pool.query(queryText, [updates.title, updates.author_id, updates.published_date, id]);
+    // const update = await pool.query(queryText, [])
+    return result.rows[0] || null;
+    } catch (error) {
+      console.error('Error updating book:', error);
+      throw error;
+    }
 }
 
 export async function deleteBookById(id) {

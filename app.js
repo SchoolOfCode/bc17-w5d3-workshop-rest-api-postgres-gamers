@@ -107,9 +107,13 @@ app.get("/books/:id", async function (req, res) {
 
 // Endpoint to create a new book
 app.post("/books/", async function (req, res) {
-  const data = req.body;
-  const book = await createBook(data);
-  res.status(201).json({ status: "success", data: book });
+  try {
+    const data = req.body;
+    const book = await createBook(data);
+    res.status(201).json({ status: "success", data: book });
+  } catch (error) {
+    res.status(500).json({ status: "error", message: "Internal Server Error" });
+  }
 });
 
 // Endpoint to update a specific book by id
